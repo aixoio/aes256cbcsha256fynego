@@ -11,9 +11,9 @@ func main() {
 	a = app.New()
 	w := a.NewWindow("AES-256 CBC SHA256")
 
-	w.SetContent(render())
+	w.SetContent(render(w))
 	w.SetMaster()
-	w.Resize(fyne.NewSize(512, 512))
+	w.Resize(fyne.NewSize(612, 612))
 
 	w.Show()
 	a.Run()

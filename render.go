@@ -7,11 +7,12 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/aixoio/aesbuddy"
 )
 
-func render() fyne.CanvasObject {
+func render(w fyne.Window) fyne.CanvasObject {
 	return container.NewCenter(
 		container.NewBorder(
 			widget.NewLabel("AES 256-Bit CBC SHA256 Util"),
@@ -21,16 +22,10 @@ func render() fyne.CanvasObject {
 			container.NewGridWithColumns(
 				2,
 				widget.NewButton("Encrypt", func() {
-					w := a.NewWindow("Encrypt")
 					w.SetContent(encryptWindow(w))
-					w.Resize(fyne.NewSize(512, 128))
-					w.Show()
 				}),
 				widget.NewButton("Decrypt", func() {
-					w := a.NewWindow("Decrypt")
 					w.SetContent(decryptWindow(w))
-					w.Resize(fyne.NewSize(512, 128))
-					w.Show()
 				}),
 			),
 		),
@@ -38,6 +33,7 @@ func render() fyne.CanvasObject {
 }
 
 func encryptWindow(w fyne.Window) fyne.CanvasObject {
+	backbtn := widget.NewButtonWithIcon("Back to menu", theme.NavigateBackIcon(), func() { w.SetContent(render(w)) })
 	filePathTxt := widget.NewLabel("No file selected")
 	path := ""
 	pwdWid := widget.NewPasswordEntry()
@@ -87,7 +83,12 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 	}
 
 	return container.NewBorder(
-		widget.NewLabel("Encrypt"),
+		container.NewGridWithColumns(
+			3,
+			backbtn,
+			widget.NewLabel("Encrypt"),
+			widget.NewLabel(""),
+		),
 		encBtn,
 		nil,
 		nil,
@@ -120,6 +121,7 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 }
 
 func decryptWindow(w fyne.Window) fyne.CanvasObject {
+	backbtn := widget.NewButtonWithIcon("Back to menu", theme.NavigateBackIcon(), func() { w.SetContent(render(w)) })
 	filePathTxt := widget.NewLabel("No file selected")
 	path := ""
 	pwdWid := widget.NewPasswordEntry()
@@ -169,7 +171,12 @@ func decryptWindow(w fyne.Window) fyne.CanvasObject {
 	}
 
 	return container.NewBorder(
-		widget.NewLabel("Decrypt"),
+		container.NewGridWithColumns(
+			3,
+			backbtn,
+			widget.NewLabel("Decrypt"),
+			widget.NewLabel(""),
+		),
 		decBtn,
 		nil,
 		nil,
