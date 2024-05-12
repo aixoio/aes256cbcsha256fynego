@@ -36,7 +36,7 @@ func decryptWindow(w fyne.Window) fyne.CanvasObject {
 		}
 
 		dialog.ShowFileSave(func(uc fyne.URIWriteCloser, err error) {
-			if uc.URI() == nil {
+			if uc == nil {
 				return
 			}
 			if err != nil {
@@ -50,6 +50,8 @@ func decryptWindow(w fyne.Window) fyne.CanvasObject {
 				return
 			}
 			uc.Close()
+
+			dialog.ShowInformation("Decrypted", "The file you selected was decrypted and saved", w)
 
 		}, w)
 
@@ -83,7 +85,7 @@ func decryptWindow(w fyne.Window) fyne.CanvasObject {
 				filePathTxt,
 				widget.NewButton("Select file", func() {
 					dialog.ShowFileOpen(func(uc fyne.URIReadCloser, err error) {
-						if uc.URI() == nil {
+						if uc == nil {
 							return
 						}
 						if err != nil {

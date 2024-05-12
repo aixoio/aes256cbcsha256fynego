@@ -36,7 +36,7 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 		}
 
 		dialog.ShowFileSave(func(uc fyne.URIWriteCloser, err error) {
-			if uc.URI() == nil {
+			if uc == nil {
 				return
 			}
 			if err != nil {
@@ -51,6 +51,8 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 			}
 
 			uc.Close()
+
+			dialog.ShowInformation("Encrypted", "The file you selected was encrypted and saved", w)
 
 		}, w)
 
@@ -84,7 +86,7 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 				filePathTxt,
 				widget.NewButton("Select file", func() {
 					dialog.ShowFileOpen(func(uc fyne.URIReadCloser, err error) {
-						if uc.URI() == nil {
+						if uc == nil {
 							return
 						}
 						if err != nil {
