@@ -23,13 +23,13 @@ func render() fyne.CanvasObject {
 				widget.NewButton("Encrypt", func() {
 					w := a.NewWindow("Encrypt")
 					w.SetContent(encryptWindow(w))
-					w.Resize(fyne.NewSize(512, 512))
+					w.Resize(fyne.NewSize(512, 128))
 					w.Show()
 				}),
 				widget.NewButton("Decrypt", func() {
 					w := a.NewWindow("Decrypt")
 					w.SetContent(decryptWindow(w))
-					w.Resize(fyne.NewSize(512, 512))
+					w.Resize(fyne.NewSize(512, 128))
 					w.Show()
 				}),
 			),
