@@ -8,6 +8,7 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"github.com/aixoio/aesbuddy"
 )
 
 func render() fyne.CanvasObject {
@@ -46,10 +47,32 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 	encBtn := widget.NewButton("Encrypt", func() {
 		dat, err := os.ReadFile(path)
 		if err != nil {
+			dialog.ShowError(err, w)
 			w.Close()
 		}
 
 		aes_key := sha256_to_bytes([]byte(pwdWid.Text))
+
+		enced, err := aesbuddy.AesCBCEncrypt(aes_key, dat)
+		if err != nil {
+			dialog.ShowError(err, w)
+			w.Close()
+		}
+
+		dialog.ShowFileSave(func(uc fyne.URIWriteCloser, err error) {
+			if err != nil {
+				w.Close()
+			}
+
+			_, err = uc.Write(enced)
+			if err != nil {
+				dialog.ShowError(err, w)
+				w.Close()
+			}
+
+			w.Close()
+
+		}, w)
 
 	})
 
