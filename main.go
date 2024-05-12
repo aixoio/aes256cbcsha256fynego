@@ -13,6 +13,7 @@ func main() {
 
 	w.SetContent(render())
 	w.SetMaster()
+	w.Resize(fyne.NewSize(512, 512))
 
 	w.Show()
 	a.Run()
