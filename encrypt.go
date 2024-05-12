@@ -50,8 +50,6 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 				return
 			}
 
-			w.Close()
-
 			uc.Close()
 
 		}, w)

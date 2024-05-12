@@ -49,8 +49,6 @@ func decryptWindow(w fyne.Window) fyne.CanvasObject {
 				dialog.ShowError(err, w)
 				return
 			}
-
-			w.Close()
 			uc.Close()
 
 		}, w)
