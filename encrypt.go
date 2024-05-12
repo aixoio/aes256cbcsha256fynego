@@ -24,7 +24,7 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 		dat, err := os.ReadFile(path)
 		if err != nil {
 			dialog.ShowError(err, w)
-			w.Close()
+			return
 		}
 
 		aes_key := sha256_to_bytes([]byte(pwdWid.Text))
@@ -32,21 +32,27 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 		enced, err := aesbuddy.AesCBCEncrypt(aes_key, dat)
 		if err != nil {
 			dialog.ShowError(err, w)
-			w.Close()
+			return
 		}
 
 		dialog.ShowFileSave(func(uc fyne.URIWriteCloser, err error) {
+			if uc.URI() == nil {
+				return
+			}
 			if err != nil {
-				w.Close()
+				dialog.ShowError(err, w)
+				return
 			}
 
 			_, err = uc.Write(enced)
 			if err != nil {
 				dialog.ShowError(err, w)
-				w.Close()
+				return
 			}
 
 			w.Close()
+
+			uc.Close()
 
 		}, w)
 
@@ -80,8 +86,12 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 				filePathTxt,
 				widget.NewButton("Select file", func() {
 					dialog.ShowFileOpen(func(uc fyne.URIReadCloser, err error) {
+						if uc.URI() == nil {
+							return
+						}
 						if err != nil {
-							w.Close()
+							dialog.ShowError(err, w)
+							return
 						}
 						path = uc.URI().Path()
 						filePathTxt.SetText(uc.URI().Name())
@@ -90,6 +100,8 @@ func encryptWindow(w fyne.Window) fyne.CanvasObject {
 						} else {
 							encBtn.Disable()
 						}
+
+						uc.Close()
 					}, w)
 				}),
 			),
